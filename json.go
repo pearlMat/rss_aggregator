@@ -1,7 +1,7 @@
 package main
 
-import(
-	"json/encoding"
+import (
+	"encoding/json"
 	"log"
 	"net/http"
 )
