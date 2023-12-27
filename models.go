@@ -11,16 +11,16 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	Name      string    `json:"name"`
-	APIKey    string    `json:"api_key"`
+	ApiKey    string    `json:"api_key"`
 }
 
-func databaseUserToUser(dbUser database.User) User {
+func databaseUserToUser(user database.User) User {
 	return User{
-		ID:        dbUser.ID,
-		CreatedAt: dbUser.CreatedAt,
-		UpdatedAt: dbUser.UpdatedAt,
-		Name:      dbUser.Name,
-		APIKey:    dbUser.ApiKey,
+		ID:        user.ID,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+		Name:      user.Name,
+		ApiKey:    user.ApiKey,
 	}
 }
 
@@ -30,58 +30,45 @@ type Feed struct {
 	UpdatedAt time.Time `json:"updated_at"`
 	Name      string    `json:"name"`
 	Url       string    `json:"url"`
-	UserId    uuid.UUID `json:"user_id"`
+	UserID    uuid.UUID `json:"user_id"`
 }
 
-func databaseFeedToFeed(dbFeed database.Feed) Feed {
+func databaseFeedToFeed(feed database.Feed) Feed {
 	return Feed{
-		ID:        dbFeed.ID,
-		CreatedAt: dbFeed.CreatedAt,
-		UpdatedAt: dbFeed.UpdatedAt,
-		Name:      dbFeed.Name,
-		Url:       dbFeed.Url,
-		UserId:    dbFeed.UserID,
+		ID:        feed.ID,
+		CreatedAt: feed.CreatedAt,
+		UpdatedAt: feed.UpdatedAt,
+		Name:      feed.Name,
+		Url:       feed.Url,
+		UserID:    feed.UserID,
 	}
 }
 
-func databaseFeedToFeeds(dbFeeds []database.Feed) []Feed {
-	feeds := []Feed{}
-
-	for _, dbFeed := range dbFeeds {
-		feeds = append(feeds, databaseFeedToFeed(dbFeed))
+func databaseFeedsToFeeds(feeds []database.Feed) []Feed {
+	result := make([]Feed, len(feeds))
+	for i, feed := range feeds {
+		result[i] = databaseFeedToFeed(feed)
 	}
-	return feeds
+	return result
 }
 
 type FeedFollow struct {
 	ID        uuid.UUID `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
-
-	UserId uuid.UUID `json:"user_id"`
-	FeedID uuid.UUID `json:"feed_id"`
+	UserID    uuid.UUID `json:"user_id"`
+	FeedID    uuid.UUID `json:"feed_id"`
 }
 
-func databaseFeedFollowToFeedFollow(dbFeedFollow database.FeedFollow) FeedFollow {
+func databaseFeedFollowToFeedFollow(feedFollow database.FeedFollow) FeedFollow {
 	return FeedFollow{
-		ID:        dbFeedFollow.ID,
-		CreatedAt: dbFeedFollow.CreatedAt,
-		UpdatedAt: dbFeedFollow.UpdatedAt,
-
-		UserId: dbFeedFollow.UserID,
-		FeedID: dbFeedFollow.FeedID,
+		ID:        feedFollow.ID,
+		CreatedAt: feedFollow.CreatedAt,
+		UpdatedAt: feedFollow.UpdatedAt,
+		UserID:    feedFollow.UserID,
+		FeedID:    feedFollow.FeedID,
 	}
 }
-
-
-/*func databaseFeedFollowsToFeedFollows(dbFeedFollows []database.FeedFollow) []FeedFollow {
-	feedFollows := []FeedFollow{}
-
-	for _, dbFeedFollow := range dbFeedFollows {
-		feedFollows = append(feedFollows, databaseFeedFollowToFeedFollow(dbFeedFollow))
-	}
-	return feedFollows
-}*/
 
 func databaseFeedFollowsToFeedFollows(feedFollows []database.FeedFollow) []FeedFollow {
 	result := make([]FeedFollow, len(feedFollows))
