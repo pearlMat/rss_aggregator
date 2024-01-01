@@ -20,7 +20,7 @@ func handlerError(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, 400, "something went wrong")
 }
 
-func (apiCfg *apiConfig)handlerCreateUser(w http.ResponseWriter, r *http.Request) {
+func (apiCfg *ApiConfig)handlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type params struct{
 		Name string `json:"name"`
 	}
@@ -47,11 +47,11 @@ func (apiCfg *apiConfig)handlerCreateUser(w http.ResponseWriter, r *http.Request
 	respondWithJSON(w, 200, databaseUserToUser(user))
 }
 
-func (cfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
+func (cfg *ApiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
 	respondWithJSON(w, http.StatusOK, databaseUserToUser(user))
 }
 
-func (apiCfg *apiConfig)handlerCreateFeed(w http.ResponseWriter, r *http.Request, user database.User) {
+func (apiCfg *ApiConfig)handlerCreateFeed(w http.ResponseWriter, r *http.Request, user database.User) {
 	type params struct{
 		Name string `json:"name"`
 		Url string `json:"url"`
@@ -81,7 +81,7 @@ func (apiCfg *apiConfig)handlerCreateFeed(w http.ResponseWriter, r *http.Request
 	respondWithJSON(w, 200, databaseFeedToFeed(feed))
 }
 
-func (cfg *apiConfig) handlerGetFeeds(w http.ResponseWriter, r *http.Request) {
+func (cfg *ApiConfig) handlerGetFeeds(w http.ResponseWriter, r *http.Request) {
 	feeds, err := cfg.DB.GetFeeds(r.Context())
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't get feeds")
@@ -91,7 +91,7 @@ func (cfg *apiConfig) handlerGetFeeds(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusOK, databaseFeedsToFeeds(feeds))
 }
 
-func (cfg *apiConfig) handlerGetFeedFollows(w http.ResponseWriter, r *http.Request, user database.User) {
+func (cfg *ApiConfig) handlerGetFeedFollows(w http.ResponseWriter, r *http.Request, user database.User) {
 	feedFollows, err := cfg.DB.GetFeedFollows(r.Context(), user.ID)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't create feed follow")
@@ -101,7 +101,7 @@ func (cfg *apiConfig) handlerGetFeedFollows(w http.ResponseWriter, r *http.Reque
 	respondWithJSON(w, http.StatusOK, feedFollows)
 }
 
-func (cfg *apiConfig) handlerCreateFeedFollow(w http.ResponseWriter, r *http.Request, user database.User) {
+func (cfg *ApiConfig) handlerCreateFeedFollow(w http.ResponseWriter, r *http.Request, user database.User) {
 	type parameters struct {
 		FeedID uuid.UUID
 	}
@@ -128,7 +128,7 @@ func (cfg *apiConfig) handlerCreateFeedFollow(w http.ResponseWriter, r *http.Req
 	respondWithJSON(w, http.StatusOK, databaseFeedFollowToFeedFollow(feedFollow))
 }
 
-func (cfg *apiConfig) handlerFeedFollowDelete(w http.ResponseWriter, r *http.Request, user database.User) {
+func (cfg *ApiConfig) handlerFeedFollowDelete(w http.ResponseWriter, r *http.Request, user database.User) {
 	feedFollowIDStr := chi.URLParam(r, "feedFollowID")
 	feedFollowID, err := uuid.Parse(feedFollowIDStr)
 	if err != nil {

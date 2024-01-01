@@ -13,7 +13,7 @@ import (
 	"github.com/pearlMat/rss_aggregator/internal/database"
 )
 
-type apiConfig struct {
+type ApiConfig struct {
 	DB *database.Queries
 }
 func main() {
@@ -35,7 +35,7 @@ func main() {
 	
 	
 
-	apiCfg := apiConfig{
+	apiCfg := ApiConfig{
 		DB: database.New(db),
 	}
 
